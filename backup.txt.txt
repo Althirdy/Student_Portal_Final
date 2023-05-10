@@ -1,0 +1,70 @@
+ try {
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "student id is already Taken");
+            } else {
+                String sql3 = "Select * from `user_db` where username='" + user_name + "'";
+
+                pst = con.prepareStatement(sql3);
+                rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    if (b1.isSelected() && !fullname.equals("") && !student_num.equals("")) {
+                        String sql1 = "INSERT INTO `user_db`(`student_no`,`password`, `fullname`, `sex`, `userType`,`course_section`,`username`) VALUES (?,?,?,?,?,?,?)";
+                        try {
+                            pst = con.prepareStatement(sql1);
+                            pst.setString(1, student_num);
+                            pst.setString(2, password);
+                            pst.setString(3, fullname);
+                            pst.setString(4, gender());
+                            pst.setString(5, usertype());
+                            pst.setString(6, program_sec);
+                            pst.setString(7, user_name);
+                            int k = pst.executeUpdate();
+                            if (k == 1) {
+                                studentnum.setText("");
+                                firstname.setText("");
+                                lastname.setText("");
+                                pass.setText("");
+                                program.setText("");
+                                username.setText("");
+                                JOptionPane.showMessageDialog(null, "You are Regeistered");
+                                dispose();
+                                new login().setVisible(true);
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    } else if (a1.isSelected() && !fullname.equals(" ") && student_num.equals("")) {
+                        String sql2 = "INSERT INTO `user_db`(`password`, `fullname`, `sex`, `userType`,`username`) VALUES (?,?,?,?,?)";
+                        pst = con.prepareStatement(sql2);
+                        pst.setString(1, password);
+                        pst.setString(2, fullname);
+                        pst.setString(3, gender());
+                        pst.setString(4, usertype());
+                        pst.setString(5, user_name);
+                        int k = pst.executeUpdate();
+                        if (k == 1) {
+                            studentnum.setText("");
+                            firstname.setText("");
+                            lastname.setText("");
+                            pass.setText("");
+                            program.setText("");
+                            username.setText("");
+                            JOptionPane.showMessageDialog(null, "You are Regeistered");
+                            dispose();
+                            new login().setVisible(true);
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Error Po");
+                    }
+                }
+                //----------------- Adding of Data to DataBase
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+        }
